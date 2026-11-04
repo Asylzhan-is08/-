@@ -1,0 +1,26 @@
+sequenceDiagram
+    autonumber
+    actor User as Пайдаланушы
+    participant M as Main
+    participant P as PemUtil
+    participant S as SignService
+    participant FS as Файл жүйесі
+
+    User->>M: verify --key public.pem --file doc.txt
+    M->>FS: doc.txt.sig оқу
+    FS-->>M: қолтаңба байттары
+    M->>P: readPublicKey(public.pem)
+    P->>FS: public.pem оқу
+    FS-->>P: PEM мәтіні
+    P-->>M: PublicKey
+    M->>S: verify(file, signature, publicKey)
+    S->>FS: файлды буфермен оқу
+    FS-->>S: байттар
+    S->>S: Signature.update() және verify()
+    alt қолтаңба дұрыс
+        S-->>M: true
+        M-->>User: VALID
+    else файл өзгерген, кілт басқа немесе қолтаңба бүлінген
+        S-->>M: false
+        M-->>User: INVALID
+    end

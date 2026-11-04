@@ -1,0 +1,38 @@
+classDiagram
+    class Main {
+        -keyService : KeyService
+        -pemUtil : PemUtil
+        -signService : SignService
+        +main(args : String[])$ void
+        ~run(args : String[]) int
+        ~parseOptions(args : String[])$ Map
+    }
+    class KeyService {
+        +ALGORITHM : String$
+        +KEY_SIZE : int$
+        +generateKeyPair() KeyPair
+    }
+    class PemUtil {
+        +writePrivateKey(key : PrivateKey, path : Path) void
+        +writePublicKey(key : PublicKey, path : Path) void
+        +readPrivateKey(path : Path) PrivateKey
+        +readPublicKey(path : Path) PublicKey
+    }
+    class SignService {
+        +ALGORITHM : String$
+        +sign(file : Path, key : PrivateKey) byte[]
+        +verify(file : Path, sig : byte[], key : PublicKey) boolean
+    }
+    class EsignException {
+        +EsignException(message : String)
+        +EsignException(message : String, cause : Throwable)
+    }
+    class RuntimeException
+
+    RuntimeException <|-- EsignException
+    Main --> KeyService : uses
+    Main --> PemUtil : uses
+    Main --> SignService : uses
+    KeyService ..> EsignException : throws
+    PemUtil ..> EsignException : throws
+    SignService ..> EsignException : throws

@@ -1,0 +1,16 @@
+flowchart LR
+    U(["Қол қоюшы<br/>(пайдаланушы)"])
+    V(["Тексеруші"])
+    subgraph SYS["Esign-Util"]
+        UC1(["Кілт жұбын жасау<br/>keygen"])
+        UC2(["Файлға қол қою<br/>sign"])
+        UC3(["Қолтаңбаны тексеру<br/>verify"])
+        UC4(["Кілтті PEM-ге жазу"])
+        UC5(["Кілтті PEM-нен оқу"])
+    end
+    U --- UC1
+    U --- UC2
+    V --- UC3
+    UC1 -.->|include| UC4
+    UC2 -.->|include| UC5
+    UC3 -.->|include| UC5
